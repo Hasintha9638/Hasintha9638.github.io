@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>TikTok connected — Daily Story Uploader</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <p><a href="index.html">← Daily Story Uploader</a></p>
+  <h1 id="title">Connecting TikTok…</h1>
+  <p id="msg" class="lead"></p>
+  <div id="box" style="display:none">
+    <p>Your one-time authorization code:</p>
+    <p><code id="code" style="word-break:break-all;display:block;padding:12px;font-size:15px"></code></p>
+    <p><button id="copy" style="font:600 16px system-ui;padding:10px 18px;border-radius:8px;border:0;background:#ffd27a;color:#0f1226;cursor:pointer">Copy code</button></p>
+    <p class="meta">Paste it into the <b>"Connect TikTok"</b> workflow in GitHub (Actions → Connect TikTok → Run workflow) within 5 minutes. It works only once.</p>
+  </div>
+</main>
+<script>
+  const q = new URLSearchParams(location.search);
+  const code = q.get("code"), err = q.get("error");
+  if (code) {
+    document.getElementById("title").textContent = "TikTok authorized ✓";
+    document.getElementById("msg").textContent = "Daily Story Uploader can now post your daily videos to your TikTok account.";
+    document.getElementById("code").textContent = code;
+    document.getElementById("box").style.display = "block";
+    document.getElementById("copy").onclick = () => navigator.clipboard.writeText(code).then(() => document.getElementById("copy").textContent = "Copied ✓");
+  } else {
+    document.getElementById("title").textContent = err ? "Authorization was not completed" : "TikTok sign-in";
+    document.getElementById("msg").textContent = err ? ("TikTok returned: " + (q.get("error_description") || err)) : "This page receives the result of signing in with TikTok for Daily Story Uploader.";
+  }
+</script>
+</body>
+</html>
